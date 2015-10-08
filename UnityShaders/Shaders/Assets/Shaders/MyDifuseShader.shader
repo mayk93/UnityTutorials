@@ -1,4 +1,4 @@
-﻿Shader "MyDifuseShader"
+﻿Shader "MyDiffuseShader"
 {
 	Properties
 	{
@@ -27,6 +27,7 @@
 				float2 textureCoordinates : TEXCOORD0;
 			};
 			
+			// This is a structure we fill using the code below and give to Unity.
 			struct vectorToFragment
 			{
 				float4 position : SV_POSITION;
@@ -34,6 +35,7 @@
 				float2 textureCoordinates : TEXCOORD0;
 			};
 			
+			// This is how we modify vectorToFragment type objects using the appdata type object given to us by Unity.
 			vectorToFragment myVertex(appdata IN)
 			{
 				vectorToFragment OUT;
@@ -50,9 +52,9 @@
 				fixed4 textureColor = tex2D(MyTexture,IN.textureCoordinates);
 				float3 normalDirection = normalize(IN.normal);
 				float3 lightDirection = normalize(_WorldSpaceLightPos0.xyz);
-				float3 difuse = _LightColor0.rbg * max(0.0,dot(normalDirection,lightDirection)); //_LightColor0 is the color of the first light. If the product of the normal and light direction is positive, it means we are facing the object.
+				float3 diffuse = _LightColor0.rbg * max(0.0,dot(normalDirection,lightDirection)); //_LightColor0 is the color of the first light. If the product of the normal and light direction is positive, it means we are facing the object.
 				
-				return MyColor * textureColor * float4(difuse,1.0);
+				return MyColor * textureColor * float4(diffuse,1.0);
 			}
 			
 			ENDCG
